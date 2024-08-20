@@ -1,10 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const User = require('../models/User');
 const router = express.Router();
 
-// Registrar usuario
+// Registrar usuario JWT
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
@@ -70,6 +71,25 @@ router.post('/login', async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server error');
     }
+});
+
+// Authorization Code Grant
+router.get('/auth', passport.authenticate('oauth2'));
+
+// Ruta de callback después de la autorización
+router.get('/auth/callback', passport.authenticate('oauth2', { 
+    failureRedirect: '/' 
+  }), (req, res) => {
+    // Redirigir al usuario a la página de perfil después de autenticarse
+    res.redirect('/profile');
+});
+
+// Ruta protegida de ejemplo
+router.get('/profile', (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ msg: 'No autenticado' });
+  }
+  res.json(req.user);
 });
 
 module.exports = router;
