@@ -28,9 +28,10 @@ router.post('/register', async (req, res) => {
             }
         };
 
+        // Aquí es donde se usa la clave secreta
         jwt.sign(
             payload,
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET,  // Asegúrate de que JWT_SECRET esté definido en tu archivo .env
             { expiresIn: '1h' },
             (err, token) => {
                 if (err) throw err;
@@ -66,9 +67,10 @@ router.post('/login', async (req, res) => {
             }
         };
 
+        // Aquí es donde se usa la clave secreta
         jwt.sign(
             payload,
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET,  // Asegúrate de que JWT_SECRET esté definido en tu archivo .env
             { expiresIn: '1h' },
             (err, token) => {
                 if (err) throw err;
