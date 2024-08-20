@@ -1,20 +1,18 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth');
 
-// Cargar variables de entorno
 dotenv.config();
 
-// Conectar a la base de datos
 connectDB();
 
 const app = express();
 
-// Middleware para parsear JSON
 app.use(express.json());
 
-// Rutas de ejemplo (aquí agregarás tus rutas en el futuro)
-app.get('/', (req, res) => res.send('API Running'));
+// Usar las rutas de autenticación
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
