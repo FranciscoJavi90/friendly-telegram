@@ -3,18 +3,28 @@ const OAuth2Strategy = require('passport-oauth2').Strategy;
 const User = require('../models/User');
 
 passport.use(new OAuth2Strategy({
-    authorizationURL: process.env.AUTHORIZATION_URL,
-    tokenURL: process.env.TOKEN_URL,
+    authorizationURL: 'https://github.com/login/oauth/authorize',
+    tokenURL: 'https://github.com/login/oauth/access_token',
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
-      let user = await User.findOne({ oauthId: profile.id });
+      // Usando `accessToken` para obtener información del perfil del usuario
+      const response = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+      const profileData = await response.json();
+      
+      // Puedes usar `profileData` para buscar o crear el usuario en la base de datos
+      let user = await User.findOne({ oauthId: profileData.id });
       if (!user) {
         user = new User({
-          oauthId: profile.id,
+          oauthId: profileData.id,
+          username: profileData.login,
           // Otros campos que quieras guardar del perfil
         });
         await user.save();
@@ -25,7 +35,6 @@ passport.use(new OAuth2Strategy({
     }
   }
 ));
-
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
