@@ -130,7 +130,7 @@ router.get('/spotify/callback', async (req, res) => {
         const tokenResponse = await exchangeCodeForToken(code);
         const userInfo = await getUserInfo(tokenResponse.access_token);
 
-        // Guarda los datos en la sesión (si estás usando sesiones)
+        // Guarda los datos en la sesión
         req.session.user = userInfo;
         const encodedUserInfo = encodeURIComponent(JSON.stringify(userInfo));
 

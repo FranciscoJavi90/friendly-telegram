@@ -8,52 +8,156 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212; /* Fondo oscuro para el estilo de Spotify */
+            color: #0c0909; /* Texto blanco para contraste */
         }
 
-        #user-image {
+        .card-container {
+            perspective: 2000px;
+        }
+
+        .book {
+            position: relative;
+            width: 500px; /* Tamaño ajustado */
+            height: 600px; /* Tamaño ajustado */
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .book:hover {
+            transform: rotateY(180deg);
+        }
+
+        .book-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .front {
+            background-color: #282828; /* Verde de Spotify */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .front img {
+            width: 100px; /* Tamaño del logo de Spotify */
+            height: auto;
+        }
+
+        .back {
+            background-color: #1db954; /* Fondo oscuro para el reverso */
+            transform: rotateY(180deg);
+            color: #ffffff;
+            font-size: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back h1 {
+            font-size: 28px; /* Tamaño del nombre del usuario */
+            margin: 10px 0;
+            color: #020303; /* Verde de Spotify */
+        }
+        .back p {
+            font-size: 22px; /* Tamaño de la información del usuario */
+            margin: 10px 0;
+            color: #ffffff; /* Texto blanco para contraste */
+            font-weight: bold;
+        }
+
+        .back p span {
+            color: #060807; /* Color verde para los datos del usuario */
+            font-size: 24px; /* Tamaño más grande para los datos */
+        }
+
+        .back img {
             border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .profile-info {
-            margin-top: 10px;
+            margin: 10px 0;
+            width: 180px; /* Tamaño ajustado */
+            height: 180px; /* Tamaño ajustado */
+            border: 3px solid #1db954; /* Borde verde de Spotify */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra alrededor de la imagen */
         }
     </style>
-</head>
-
-<body>
-    <h1>Welcome, <span id="user-name"></span>!</h1>
-    <p>Email: <span id="user-email"></span></p>
-    <p>Country: <span id="user-country"></span></p>
-    <p>Followers: <span id="user-followers"></span></p>
-    <p>Product: <span id="user-product"></span></p>
-    <img id="user-image" src="" alt="Profile Image" />
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    </head>
+    
+    <body>
+        <div class="card-container">
+            <div class="book">
+                <div class="book-face front">
+                    <svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+                        <path
+                            d="M128 0C57.308 0 0 57.309 0 128c0 70.696 57.309 128 128 128 70.697 0 128-57.304 128-128C256 57.314 198.697.007 127.998.007l.001-.006Zm58.699 184.614c-2.293 3.76-7.215 4.952-10.975 2.644-30.053-18.357-67.885-22.515-112.44-12.335a7.981 7.981 0 0 1-9.552-6.007 7.968 7.968 0 0 1 6-9.553c48.76-11.14 90.583-6.344 124.323 14.276 3.76 2.308 4.952 7.215 2.644 10.975Zm15.667-34.853c-2.89 4.695-9.034 6.178-13.726 3.289-34.406-21.148-86.853-27.273-127.548-14.92-5.278 1.594-10.852-1.38-12.454-6.649-1.59-5.278 1.386-10.842 6.655-12.446 46.485-14.106 104.275-7.273 143.787 17.007 4.692 2.89 6.175 9.034 3.286 13.72v-.001Zm1.345-36.293C162.457 88.964 94.394 86.71 55.007 98.666c-6.325 1.918-13.014-1.653-14.93-7.978-1.917-6.328 1.65-13.012 7.98-14.935C93.27 62.027 168.434 64.68 215.929 92.876c5.702 3.376 7.566 10.724 4.188 16.405-3.362 5.69-10.73 7.565-16.4 4.187h-.006Z"
+                            fill="#1ED760" />
+                    </svg>
+                </div>
+                <div class="book-face back">
+                    <div class="profile-info">
+                        <h1>Spotify</h1>
+                        <h1>Hola, <span id="user-name"></span>!</h1>
+                        <p>Es tuyo?: <span id="user-email"></span></p>
+                        <p>País: <span id="user-country"></span></p>
+                        <p>Tus seguidores: <span id="user-followers"></span></p>
+                        <p>Product: <span id="user-product"></span></p>
+                        <img id="user-image" src="" alt="Profile Image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Obtener el parámetro 'user' de la URL
                 const userParam = new URLSearchParams(window.location.search).get('user');
                 if (!userParam) {
                     throw new Error('User information is missing');
                 }
+
                 // Decodificar la información del usuario
                 const userInfo = JSON.parse(decodeURIComponent(userParam));
+
                 // Mostrar la información en la página
                 document.getElementById('user-name').textContent = userInfo.display_name || 'No name available';
                 document.getElementById('user-email').textContent = userInfo.email || 'No email available';
                 document.getElementById('user-country').textContent = userInfo.country || 'No country information';
                 document.getElementById('user-followers').textContent = userInfo.followers.total || 'No followers information';
                 document.getElementById('user-product').textContent = userInfo.product || 'No product information';
+
                 // Mostrar la imagen de perfil (elige la imagen de mayor tamaño)
                 const imageUrl = userInfo.images.length > 0 ? userInfo.images[1].url : '';
                 document.getElementById('user-image').src = imageUrl;
+                // Redirigir a una URL limpia
+                //const url = new URL(window.location);
+                //url.searchParams.delete('user');
+                //window.history.replaceState({}, '', url);
             } catch (error) {
                 console.error('Error fetching profile:', error);
             }
         });
     </script>
-</body>
-
-</html>
+    </body>
+    
+    </html>
