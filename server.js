@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const session = require('express-session');
 const authRoutes = require('./routes/auth');
+const path = require('path');
 
 dotenv.config();
 
@@ -20,6 +21,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+app.get('/profile', (req, res) => {
+    // Asegúrate de que 'public' es el directorio correcto
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
 
 app.use(passport.initialize());
 app.use(passport.session());

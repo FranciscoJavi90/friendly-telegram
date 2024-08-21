@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #user-image {
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .profile-info {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome, <span id="user-name"></span>!</h1>
+    <p>Email: <span id="user-email"></span></p>
+    <p>Country: <span id="user-country"></span></p>
+    <p>Followers: <span id="user-followers"></span></p>
+    <p>Product: <span id="user-product"></span></p>
+    <img id="user-image" src="" alt="Profile Image" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Obtener el parámetro 'user' de la URL
+                const userParam = new URLSearchParams(window.location.search).get('user');
+                if (!userParam) {
+                    throw new Error('User information is missing');
+                }
+                // Decodificar la información del usuario
+                const userInfo = JSON.parse(decodeURIComponent(userParam));
+                // Mostrar la información en la página
+                document.getElementById('user-name').textContent = userInfo.display_name || 'No name available';
+                document.getElementById('user-email').textContent = userInfo.email || 'No email available';
+                document.getElementById('user-country').textContent = userInfo.country || 'No country information';
+                document.getElementById('user-followers').textContent = userInfo.followers.total || 'No followers information';
+                document.getElementById('user-product').textContent = userInfo.product || 'No product information';
+                // Mostrar la imagen de perfil (elige la imagen de mayor tamaño)
+                const imageUrl = userInfo.images.length > 0 ? userInfo.images[1].url : '';
+                document.getElementById('user-image').src = imageUrl;
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>

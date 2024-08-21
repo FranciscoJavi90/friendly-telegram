@@ -10,6 +10,7 @@ const router = express.Router();
 const REDIRECT_URI = 'http://localhost:5000/api/auth/spotify/callback';
 const TOKEN_SPOTIFY_ID = '61664b88054b45baadea6ae5cbfa9271';
 const CLIENTE_SPOTIFY_SECRET = '799521dc4c534e8d89a45264b7c59d1a';
+
 // Registrar usuario JWT
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
@@ -129,11 +130,26 @@ router.get('/spotify/callback', async (req, res) => {
         const tokenResponse = await exchangeCodeForToken(code);
         const userInfo = await getUserInfo(tokenResponse.access_token);
 
-        res.json(userInfo); // Devuelve la información del usuario como JSON
+        // Guarda los datos en la sesión (si estás usando sesiones)
+        req.session.user = userInfo;
+        const encodedUserInfo = encodeURIComponent(JSON.stringify(userInfo));
+
+        // Redirige al perfil con la información del usuario en la URL
+        res.redirect(`/profile?user=${encodedUserInfo}`);
     } catch (err) {
         console.error('Error al obtener el token:', err.message);
         res.status(500).json({ error: 'Error al obtener el token' });
     }
+});
+
+// Ruta para mostrar el perfil
+router.get('/profile', (req, res) => {
+    if (!req.query.user) {
+        return res.status(401).send('No user information available');
+    }
+
+    // Envía el archivo HTML
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
 
 async function exchangeCodeForToken(code) {
