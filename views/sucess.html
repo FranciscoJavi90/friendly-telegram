@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación Exitosa</title>
+</head>
+
+<body>
+    <h1>Hola, <span id="username"></span>!</h1>
+    <p>Has accedido correctamente.</p>
+    <p>Tu token de acceso es: <code id="token"></code></p>
+
+    <script>
+        // Obtener el nombre de usuario y token de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        const token = urlParams.get('token');
+
+        document.getElementById('username').textContent = username;
+        document.getElementById('token').textContent = token;
+    </script>
+</body>
+
+</html>

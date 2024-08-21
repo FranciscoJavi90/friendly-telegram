@@ -24,10 +24,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.json());
+app.use(express.json()); // Middleware para parsear JSON
 
 // Usar las rutas de autenticación
 app.use('/api/auth', authRoutes);
+
+// Manejar todas las demás rutas no definidas
+app.get('*', (req, res) => {
+    res.status(404).send('Página no encontrada');
+});
 
 const PORT = process.env.PORT || 5000;
 

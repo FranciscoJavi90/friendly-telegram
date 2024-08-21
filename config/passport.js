@@ -1,34 +1,32 @@
 const passport = require('passport');
 const OAuth2Strategy = require('passport-oauth2').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const SpotifyStrategy = require('passport-spotify').Strategy;
 const User = require('../models/User');
+const fetch = require('node-fetch'); // Asegúrate de tener node-fetch instalado
 
-passport.use(new OAuth2Strategy({
-    authorizationURL: 'https://github.com/login/oauth/authorize',
-    tokenURL: 'https://github.com/login/oauth/access_token',
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
+// Configuración de SpotifyStrategy para autenticación con Spotify
+passport.use(new SpotifyStrategy({
+    clientID: process.env.TOKEN_SPOTIFY_ID,
+    clientSecret: process.env.CLIENTE_SPOTIFY_SECRET,
     callbackURL: process.env.CALLBACK_URL
   },
-  async (accessToken, refreshToken, profile, done) => {
+  async (accessToken, refreshToken, expires_in, profile, done) => {
     try {
-      // Usando `accessToken` para obtener información del perfil del usuario
-      const response = await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
-      const profileData = await response.json();
-      
-      // Puedes usar `profileData` para buscar o crear el usuario en la base de datos
-      let user = await User.findOne({ oauthId: profileData.id });
+      // Puedes usar profile para buscar o crear el usuario en la base de datos
+      let user = await User.findOne({ spotifyId: profile.id });
       if (!user) {
         user = new User({
-          oauthId: profileData.id,
-          username: profileData.login,
+          spotifyId: profile.id,
+          username: profile.username || profile.displayName,
           // Otros campos que quieras guardar del perfil
         });
         await user.save();
       }
+      
+      // Agregar el token al usuario para ser utilizado en la respuesta
+      user.token = accessToken;
       done(null, user);
     } catch (err) {
       done(err);
@@ -36,6 +34,7 @@ passport.use(new OAuth2Strategy({
   }
 ));
 
+// Serialización y deserialización del usuario
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -48,3 +47,23 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
+
+// Configuración de JwtStrategy para manejar JWT
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET
+};
+
+passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
+    try {
+        const user = await User.findById(jwt_payload.user.id);
+        if (user) {
+            return done(null, user);
+        } else {
+            return done(null, false);
+        }
+    } catch (err) {
+        return done(err, false);
+    }
+}));
+
