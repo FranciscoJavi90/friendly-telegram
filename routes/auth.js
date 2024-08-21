@@ -84,6 +84,20 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Obtener los datos del usuario actual
+router.get('/user', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+      const user = await User.findById(req.user.id).select('-password');
+      if (!user) {
+          return res.status(404).json({ msg: 'Usuario no encontrado' });
+      }
+      res.json(user);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+  }
+});
+
 // Obtener todos los usuarios
 router.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -150,6 +164,26 @@ router.get('/profile', (req, res) => {
 
     // Envía el archivo HTML
     res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
+
+// Ruta para mostrar el login
+router.get('/login', (req, res) => {
+  if (!req.query.user) {
+      return res.status(401).send('No user information available');
+  }
+
+  // Envía el archivo HTML
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// Ruta para mostrar datos de mongo
+router.get('/mongo', (req, res) => {
+  if (!req.query.user) {
+      return res.status(401).send('No user information available');
+  }
+
+  // Envía el archivo HTML
+  res.sendFile(path.join(__dirname, 'public', 'mongo.html'));
 });
 
 async function exchangeCodeForToken(code) {

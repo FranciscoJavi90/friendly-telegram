@@ -100,35 +100,51 @@
             border: 3px solid #1db954; /* Borde verde de Spotify */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra alrededor de la imagen */
         }
+
+        .logout-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4b5c; /* Color rojo para el botón de cerrar sesión */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .logout-button:hover {
+            background-color: #ff1c3c; /* Color más oscuro al pasar el ratón */
+        }
     </style>
-    </head>
-    
-    <body>
-        <div class="card-container">
-            <div class="book">
-                <div class="book-face front">
-                    <svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
-                        <path
-                            d="M128 0C57.308 0 0 57.309 0 128c0 70.696 57.309 128 128 128 70.697 0 128-57.304 128-128C256 57.314 198.697.007 127.998.007l.001-.006Zm58.699 184.614c-2.293 3.76-7.215 4.952-10.975 2.644-30.053-18.357-67.885-22.515-112.44-12.335a7.981 7.981 0 0 1-9.552-6.007 7.968 7.968 0 0 1 6-9.553c48.76-11.14 90.583-6.344 124.323 14.276 3.76 2.308 4.952 7.215 2.644 10.975Zm15.667-34.853c-2.89 4.695-9.034 6.178-13.726 3.289-34.406-21.148-86.853-27.273-127.548-14.92-5.278 1.594-10.852-1.38-12.454-6.649-1.59-5.278 1.386-10.842 6.655-12.446 46.485-14.106 104.275-7.273 143.787 17.007 4.692 2.89 6.175 9.034 3.286 13.72v-.001Zm1.345-36.293C162.457 88.964 94.394 86.71 55.007 98.666c-6.325 1.918-13.014-1.653-14.93-7.978-1.917-6.328 1.65-13.012 7.98-14.935C93.27 62.027 168.434 64.68 215.929 92.876c5.702 3.376 7.566 10.724 4.188 16.405-3.362 5.69-10.73 7.565-16.4 4.187h-.006Z"
-                            fill="#1ED760" />
-                    </svg>
-                </div>
-                <div class="book-face back">
-                    <div class="profile-info">
-                        <h1>Spotify</h1>
-                        <h1>Hola, <span id="user-name"></span>!</h1>
-                        <p>Es tuyo?: <span id="user-email"></span></p>
-                        <p>País: <span id="user-country"></span></p>
-                        <p>Tus seguidores: <span id="user-followers"></span></p>
-                        <p>Product: <span id="user-product"></span></p>
-                        <img id="user-image" src="" alt="Profile Image" />
-                    </div>
+</head>
+
+<body>
+    <div class="card-container">
+        <div class="book">
+            <div class="book-face front">
+                <svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+                    <path
+                        d="M128 0C57.308 0 0 57.309 0 128c0 70.696 57.309 128 128 128 70.697 0 128-57.304 128-128C256 57.314 198.697.007 127.998.007l.001-.006Zm58.699 184.614c-2.293 3.76-7.215 4.952-10.975 2.644-30.053-18.357-67.885-22.515-112.44-12.335a7.981 7.981 0 0 1-9.552-6.007 7.968 7.968 0 0 1 6-9.553c48.76-11.14 90.583-6.344 124.323 14.276 3.76 2.308 4.952 7.215 2.644 10.975Zm15.667-34.853c-2.89 4.695-9.034 6.178-13.726 3.289-34.406-21.148-86.853-27.273-127.548-14.92-5.278 1.594-10.852-1.38-12.454-6.649-1.59-5.278 1.386-10.842 6.655-12.446 46.485-14.106 104.275-7.273 143.787 17.007 4.692 2.89 6.175 9.034 3.286 13.72v-.001Zm1.345-36.293C162.457 88.964 94.394 86.71 55.007 98.666c-6.325 1.918-13.014-1.653-14.93-7.978-1.917-6.328 1.65-13.012 7.98-14.935C93.27 62.027 168.434 64.68 215.929 92.876c5.702 3.376 7.566 10.724 4.188 16.405-3.362 5.69-10.73 7.565-16.4 4.187h-.006Z"
+                        fill="#1ED760" />
+                </svg>
+            </div>
+            <div class="book-face back">
+                <div class="profile-info">
+                    <h1>Spotify</h1>
+                    <h1>Hola, <span id="user-name"></span>!</h1>
+                    <p>Es tuyo?: <span id="user-email"></span></p>
+                    <p>País: <span id="user-country"></span></p>
+                    <p>Tus seguidores: <span id="user-followers"></span></p>
+                    <p>Product: <span id="user-product"></span></p>
+                    <img id="user-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkhI-hWqX4X7muLgb-JCSEZhq68w5dirFIJg&s" alt="Profile Image" />
+                    <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
                 </div>
             </div>
         </div>
-    
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Obtener el parámetro 'user' de la URL
                 const userParam = new URLSearchParams(window.location.search).get('user');
@@ -146,18 +162,19 @@
                 document.getElementById('user-followers').textContent = userInfo.followers.total || 'No followers information';
                 document.getElementById('user-product').textContent = userInfo.product || 'No product information';
 
-                // Mostrar la imagen de perfil (elige la imagen de mayor tamaño)
-                const imageUrl = userInfo.images.length > 0 ? userInfo.images[1].url : '';
+                // Mostrar la imagen de perfil (elige la imagen de mayor tamaño disponible)
+                const imageUrl = userInfo.images && userInfo.images.length > 0 ? userInfo.images[0].url : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkhI-hWqX4X7muLgb-JCSEZhq68w5dirFIJg&s';
                 document.getElementById('user-image').src = imageUrl;
-                // Redirigir a una URL limpia
-                //const url = new URL(window.location);
-                //url.searchParams.delete('user');
-                //window.history.replaceState({}, '', url);
             } catch (error) {
                 console.error('Error fetching profile:', error);
             }
         });
+
+        function logout() {
+            // Redirigir a la página de inicio de sesión
+            window.location.href = '/login';
+        }
     </script>
-    </body>
-    
-    </html>
+</body>
+
+</html>

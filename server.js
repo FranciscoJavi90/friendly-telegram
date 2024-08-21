@@ -26,6 +26,16 @@ app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
 
+app.get('/login', (req, res) => {
+  // Asegúrate de que 'public' es el directorio correcto
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/mongo', (req, res) => {
+  // Asegúrate de que 'public' es el directorio correcto
+  res.sendFile(path.join(__dirname, 'public', 'mongo.html'));
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 

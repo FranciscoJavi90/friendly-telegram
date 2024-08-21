@@ -1,0 +1,94 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #121212; /* Fondo oscuro para el estilo de Spotify */
+  color: #0c0909; /* Texto blanco para contraste */
+}
+
+.card-container {
+  perspective: 2000px;
+}
+
+.book {
+  position: relative;
+  width: 500px; /* Tamaño ajustado */
+  height: 600px; /* Tamaño ajustado */
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.book:hover {
+  transform: rotateY(180deg);
+}
+
+.book-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.front {
+  background-color: #282828; /* Verde de Spotify */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.front img {
+  width: 100px; /* Tamaño del logo de Spotify */
+  height: auto;
+}
+
+.back {
+  background-color: #1db954; /* Fondo oscuro para el reverso */
+  transform: rotateY(180deg);
+  color: #ffffff;
+  font-size: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.back h1 {
+  font-size: 28px; /* Tamaño del nombre del usuario */
+  margin: 10px 0;
+  color: #020303; /* Verde de Spotify */
+}
+.back p {
+  font-size: 22px; /* Tamaño de la información del usuario */
+  margin: 10px 0;
+  color: #ffffff; /* Texto blanco para contraste */
+  font-weight: bold;
+}
+
+.back p span {
+  color: #060807; /* Color verde para los datos del usuario */
+  font-size: 24px; /* Tamaño más grande para los datos */
+}
+
+.back img {
+  border-radius: 50%;
+  margin: 10px 0;
+  width: 180px; /* Tamaño ajustado */
+  height: 180px; /* Tamaño ajustado */
+  border: 3px solid #1db954; /* Borde verde de Spotify */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra alrededor de la imagen */
+}

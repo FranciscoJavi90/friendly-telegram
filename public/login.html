@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Login</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-dark text-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control bg-dark text-light border-secondary" id="username" placeholder="Enter Username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control bg-dark text-light border-secondary" id="password" placeholder="Enter password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+          <button type="button" class="btn btn-success btn-block mt-2" onclick="window.location.href='http://localhost:5000/api/auth/spotify'">
+            <i class="fa-brands fa-spotify"></i> Sign in with Spotify
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://kit.fontawesome.com/6534ef3730.js" crossorigin="anonymous"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(`Autenticación exitosa. Token: ${data.token}`);
+          localStorage.setItem('jwtToken', data.token);
+          window.location.href = '/mongo';
+        } else {
+          alert(data.msg || 'Error en la autenticación.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error en el servidor.');
+      }
+    });
+  </script>
+</body>
+</html>

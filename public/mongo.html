@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>User Card</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-dark text-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">User Information</h2>
+        <div id="userCardContainer"></div>
+        <button id="logoutButton" class="btn btn-danger btn-block mt-3">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('jwtToken');
+
+    if (!token) {
+      alert('No se encontró el token. Por favor, inicie sesión.');
+      window.location.href = '/login';
+    } else {
+      fetch('http://localhost:5000/api/auth/user', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(user => {
+        const card = document.createElement('div');
+        card.classList.add('card', 'bg-dark', 'text-light', 'border-secondary', 'mb-3');
+        card.innerHTML = `
+          <div class="card-body text-center">
+            <img src="https://e7.pngegg.com/pngimages/312/283/png-clipart-man-s-face-avatar-computer-icons-user-profile-business-user-avatar-blue-face-thumbnail.png" class="rounded-circle mb-3" alt="User Image" style="width: 100px; height: 100px;">
+            <h5 class="card-title">${user._id}</h5>
+            <p class="card-text">Username: ${user.username}</p>
+          </div>
+        `;
+        document.getElementById('userCardContainer').appendChild(card);
+      })
+      .catch(error => console.error(error));
+    }
+
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      localStorage.removeItem('jwtToken');
+      window.location.href = '/login';
+    });
+  </script>
+</body>
+</html>
